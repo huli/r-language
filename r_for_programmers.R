@@ -151,3 +151,82 @@ f <- function(a=10, b)
 
 f(b = 3)
 # [1] 13
+
+# Hint: Parameters are passed by value
+
+
+# They consist out of three parts
+f <- function(x) x^2
+
+# Formals - the list of arguments which controls how you can call the function
+formals(f)
+# $x
+
+# Body -  the code inside the function
+body(f)
+# x^2
+
+# Environment - the “map” of the location of the function’s variables
+environment(f)
+# <environment: R_GlobalEnv>
+
+# You can also add aditional attributes to function
+# attributes(f)
+# Note: You can also add attributes to a function. For example, 
+# you can set the class() and add a custom print() method.
+
+# Primitive funktions are exceptions to this, they to not have these 3
+# componenents and will return NULL
+formals(sum)
+# NULL
+
+# List all functions in base package
+objs <- mget(ls("package:base"), inherits = TRUE)
+funs <- Filter(is.function, objs)
+
+# Lexical scoping
+x = 1
+z = 1
+f <- function(){
+  y = 2
+  f2 <- function() {
+    z = 3
+    cat(x,y,z)
+  }
+}
+
+f()()
+# 1 2 3
+
+
+# OOP in R
+# ----------------------------------------------------------
+
+# R has three different object oriented systems (and the base types):
+
+# (base types)
+# Every R object consists of a C structure holding the content of the
+# object, information for memory management and the type
+
+f <- function(){}
+typeof(f)
+# [1] "closure"
+
+is.function(f)
+# [1] TRUE
+
+# the type of a primitive function is builtin
+typeof(sum)
+# [1] "builtin"
+
+is.primitive(sum)
+# [1] TRUE
+
+# S3
+# (R's first and simplest oo system)
+
+
+# S4
+
+# Reference classes
+
