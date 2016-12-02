@@ -205,6 +205,7 @@ f()()
 # R has three different object oriented systems (and the base types):
 
 # (base types)
+# ------------------------------------------------------------------
 # Every R object consists of a C structure holding the content of the
 # object, information for memory management and the type
 
@@ -223,8 +224,97 @@ is.primitive(sum)
 # [1] TRUE
 
 # S3
+# ------------------------------------------------------------------
+
 # (R's first and simplest oo system)
 
+# to find out if an object is an S3 object
+is.object(3) & !isS4(3)
+# [1] FALSE
+
+# or with the pryr package
+# install.packages("pryr")
+library(pryr)
+
+df <- data.frame(x = 1:10, y = letters[1:10], c(11:20))
+
+# a data frame is a S3 class
+otype(df)
+
+# in S3 methods belong to functions, called generic functions
+# not to classes or objects
+
+# generic S3 methods have UseMethod in their source
+# (except builtin generic functions written in C)
+mean
+# function (x, ...) 
+#   UseMethod("mean")
+# <bytecode: 0x000000000b7dc080>
+#   <environment: namespace:base>
+  
+ftype(mean)
+# [1] "s3"      "generic"
+
+# Generic functions look like generic.class()
+# (Therefore you should not use . in function names)
+
+ftype(t.data.frame)
+# [1] "s3"     "method"
+
+ftype(t.test)
+# [1] "s3"      "generic"
+
+# list all methods that belong o a generic
+methods("t.test")
+# [1] t.test.default* t.test.formula*
+
+# or all generics that have a method for a class
+methods(class = "ts")
+# ...
+
+# Create a class with structure
+obj <- structure(list(), class = "myClass")
+
+# or by assigning it
+instance <- list()
+class(instance)
+# [1] "list"
+
+class(instance) <- "myClass"
+# [1] "myClass"
+
+inherits(instance, "myClass")
+# [1] TRUE
+
+# Constructor functions in R
+myClass <- function(x) {
+  if (!is.numeric(x)) stop("X must be numeric")
+  structure(list(x), class = "myClass")
+}
+
+test <- myClass()
+class(test)
+# [1] "myClass"
+
+# Creating new methods and generics
+f <- function(x) UseMethod("f")
+ftype(f)
+
+f.myClass <- function(x) "Called on myClass"
+f.numeric <- function(x) "Called on numeric"
+
+class(instance)
+f(instance)
+# [1] "Called on myClass"
+
+class(2)
+f(2)
+# [1] "Called on numeric"
+
+# you can also make a default
+f.default <- function(x) "Called on unknown class"
+f("e")
+# [1] "Called on unknown class"
 
 # S4
 
