@@ -33,4 +33,31 @@ dim2 <- c(1,2,3)
 dim3 <- c("t1", "t2", "t3", "t4")
 arr <- array(1:24, c(2,3,4), dimnames = list(dim1,dim2,dim3))
 
+# data.frame is a matrix with columns of different types
+# do safe typing
+attach(mtcars)
+  summary(mpg)
+  mean(mpg)
+  plot(mpg, wt)
+detach(mtcars)
+  
+# or better (but beware scope)
+with(mtcars,{
+  plot(mpg, wt)
+  foroutherscope <<- summary(mpg)
+})
+
+foroutherscope # still exists
+
+# factors
+# are oridinal or nominal variables
+status <- factor(c("Poor","Improved","Excellent", "Poor"), 
+                 order = TRUE,
+                 levels = c("Poor","Improved","Excellent"))
+
+# list are the most complex types in R (?)
+mylist <- list(c(1,2,3), foo=LETTERS[1:4], bar = "anything")
+mylist["foo"]
+
+
 
