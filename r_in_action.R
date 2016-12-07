@@ -59,5 +59,28 @@ status <- factor(c("Poor","Improved","Excellent", "Poor"),
 mylist <- list(c(1,2,3), foo=LETTERS[1:4], bar = "anything")
 mylist["foo"]
 
+# edit input by hand
+mydata <- data.frame(age=numeric(0), gender=character(0),
+                     weight=numeric(0))
+mydata <- edit(mydata)
 
+
+# read xls
+library(xlsx)
+download.file("https://www.lzg.nrw.de/00indi/0data/04/excel/0400900052014.xls", 
+              "c:\\temp\\bmi_data.xls", 
+              mode="wb")
+
+bmidata <- read.xlsx("C:\\temp\\bmi_data.xls", 1)
+
+# twitter
+install.packages("twitteR")
+library(twitteR)
+# -> needs OAuth
+
+# Connecting SQL Server
+library(RODBC)
+connection <- odbcDriverConnect('driver={SQL Server};server=sqlrem\\sql2005;database=rem_unit_test;trusted_connection=true')
+person_table <- sqlQuery(connection, 'select PersonID, Name, Vorname from dbo.Person')
+close(connection)
 
