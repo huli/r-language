@@ -84,3 +84,116 @@ connection <- odbcDriverConnect('driver={SQL Server};server=sqlrem\\sql2005;data
 person_table <- sqlQuery(connection, 'select PersonID, Name, Vorname from dbo.Person')
 close(connection)
 
+
+# Graphs
+
+with(mtcars, {
+  plot(wt, mpg)
+  abline(lm(mpg~wt))
+  title("Regression von MPG auf Gewicht")
+})
+
+# Enter some data for experimentation
+dosage <- c(20, 30, 40, 45, 60)
+drug_a <- c(16, 20, 27, 40, 60)
+drug_b <- c(15, 18, 25, 31, 40)
+
+# graphical parameters
+opar <- par(no.readonly = T)
+par(lty = 2, pch = 17)
+plot(dosage, drug_a, type = "b")
+par(opar)
+
+# or
+plot(dosage, drug_a, type = "b", lty = 2, pch = 17, cex = 1.5)
+
+# colors - RColorBrewer is nice
+if(!require(RColorBrewer)) install.packages("RColorBrewer")
+n <- 7
+my_colors <- brewer.pal(n, "Set1")
+barplot(rep(1,n), col = my_colors)
+
+# see all palettes
+display.brewer.all()
+
+# rainbow or gray
+n <- 12
+my_colors <- rainbow(n)
+pie(rep(1,n), labels = my_colors, col = my_colors)
+my_colors <- gray(0:n/n)
+pie(rep(1,n), labels = my_colors, col = my_colors)
+
+# fonts
+plot(1:10,1:10,type="n")
+windowsFonts(
+  A=windowsFont("Arial Black"),
+  B=windowsFont("Bookman Old Style"),
+  C=windowsFont("Comic Sans MS"),
+  D=windowsFont("Symbol")
+)
+text(3,3,"Hello World Default")
+text(4,4,family="A","Hello World from Arial Black")
+text(5,5,family="B","Hello World from Bookman Old Style")
+text(6,6,family="C","Hello World from Comic Sans MS")
+text(7,7,family="D", "Hello World from Symbol")
+
+# some plotting without ggplot :)
+
+# axis
+x <- c(1:10)
+y <- x
+z <- 10/x
+opar <- par(no.readonly = T)
+
+par(mar=c(5, 4, 4, 8) + .1)
+plot(x, y, type = "b", pch = 21, col = "red", yaxt = "n", lty = 3, ann = FALSE)
+
+lines(x, z, type = "b", pch = 22, col = "blue", lty = 2)
+
+axis(2, at = x, labels = x, col.axis = "red", las = 2)
+
+axis(4, at = z, labels = round(z, digits = 2),
+     col.axis = "blue", las = 2, cex.axis = .7, tck = -.01)
+
+mtext("y=1/x", side = 4, line = 3, cex.lab = 1, las = 3, col = "blue")
+
+title("An example of creative axes",
+      xlab = "X values",
+      ylab = "Y=X"
+      )
+
+par(opar)
+
+
+opar <- par(no.readonly = T)
+
+par(lwd = 1, cex = 1.0, font.lab = 1)
+
+plot(dosage, drug_a, type = "b",
+     pch = 15, lty = 1, col = "red", ylim = c(0, 60),
+     main = "Drug A vs. Drug B",
+     xlab = "Drug Dosage", ylab = "Drug Response")
+
+lines(dosage, drug_b, type = "b", pch = 17, lty = 2, col = "blue")
+
+abline(h = c(30), lwd = 1.5, lty = 2, col = "gray")
+
+if(!require(Hmisc)) install.packages("Hmisc")
+library(Hmisc)
+minor.tick(nx = 3, ny = 3, tick.ratio = .5)
+
+legend("topleft", inset = .05, title = "Drug Type", c("A","B"), lty = c(1,2), pch = c(15, 16), col = c("red","blue"))
+
+# text annotations
+text(40, 40, "Possible error in measure method", pos = 3)
+
+# combining graphs
+with(mtcars, {
+  opar <- par(no.readonly = T)
+  par(mfrow = c(2, 2))
+  plot(wt, mpg, main = "Scatterplot of wt vs. mpg")
+  plot(wt, disp, main = "Scatterplot of wt vs. disp")
+  hist(wt, main = "Histogram of wt")
+  boxplot(wt, main = "Boxplot of wt")
+  par(opar)
+})
