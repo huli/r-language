@@ -187,7 +187,7 @@ legend("topleft", inset = .05, title = "Drug Type", c("A","B"), lty = c(1,2), pc
 # text annotations
 text(40, 40, "Possible error in measure method", pos = 3)
 
-# combining graphs
+# combining graphs with par
 with(mtcars, {
   opar <- par(no.readonly = T)
   par(mfrow = c(2, 2))
@@ -197,3 +197,46 @@ with(mtcars, {
   boxplot(wt, main = "Boxplot of wt")
   par(opar)
 })
+
+# fine figure arrangement
+opar <- par(no.readonly = T)
+par(fig = c(0, 0.8, 0, 0.8))
+plot(mtcars$mpg, mtcars$wt,
+     xlab = "Miles Per Gallon",
+     ylab = "Car Weight")
+par(fig = c(0, 0.8, 0.3, 1), new = T)
+boxplot(mtcars$mpg, horizontal = T, axes = F)
+
+par(fig = c(0.65, 1, 0, 0.8), new = T)
+boxplot(mtcars$wt, axes = F)
+
+# Maniuplating Data
+str(mtcars)
+range(mtcars$hp)
+
+# similar to with, but allows modification
+within(mtcars, {
+    power <- NA
+    power[hp > 250] <- "strong"
+    power[hp <= 250] <- "weak"
+}) -> mycars
+
+# renaming variables with more control than names(xy)[x] <- "bla"
+library(plyr)
+rename(mycars, c(power="strongness"))
+
+# remember
+is.na(NA)
+# [1] TRUE
+is.na(NaN)
+# [1] TRUE
+is.nan(NA)
+# [1] FALSE
+is.nan(NaN)
+# [1] TRUE
+
+vals <- c(NA, 1, 2, 3, NA)
+vals_without_na <- na.omit(vals)
+
+frame <- data.frame(Col1=c(1,2,3), Col2=c("B", "C", NA))
+na.omit(frame)
