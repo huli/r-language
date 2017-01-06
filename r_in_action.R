@@ -240,3 +240,11 @@ vals_without_na <- na.omit(vals)
 
 frame <- data.frame(Col1=c(1,2,3), Col2=c("B", "C", NA))
 na.omit(frame)
+
+
+# Check for NA in a Vector and measure performance
+x <- y <- runif(1e7)
+x[1e4] <- NA
+y[1e7] <- NA
+microbenchmark::microbenchmark(any(is.na(x)), anyNA(x), any(is.na(y)), anyNA(y), times=10)
+
