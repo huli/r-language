@@ -30,11 +30,22 @@ mietzinse %>%
   group_by(GueltigAb < '2002-01-01') %>% 
   summarise(avg_betrag = mean(BetragNetto))
 
+
+
+mietzinse_table <- mietzinse %>% as.data.table()
+
+mietzinse_table[AnzahlZimmerCD == 4.5, median(BetragNetto) , by=year]
+
+
+plot(mietzinse_table$GueltigAb, mietzinse_table$BetragNetto)
+
 mietzinse %>% 
   mutate(year = format(GueltigAb, "%Y")) %>% 
-  mutate(month = format(GueltigAb, "%m"))
-  group_by(year_month) %>% 
-  summarise(avg_betrag = mean(BetragNetto))
+  mutate(month = format(GueltigAb, "%m")) ->
+  mietzinse
+
+
+
 
 mietzinse[1:10,] %>% 
   mutate(year_month = cat(year(GueltigAb), months(GueltigAb), sep = ""))
