@@ -248,3 +248,25 @@ x[1e4] <- NA
 y[1e7] <- NA
 microbenchmark::microbenchmark(any(is.na(x)), anyNA(x), any(is.na(y)), anyNA(y), times=10)
 
+# On which weekday is my last birthday
+format(as.Date("2018-08-31"), "%A")
+
+# Nice package for datetime manipulation
+library(lubridate)
+
+# odering data
+mtcars[order(mtcars$mpg),]
+
+iris[order(iris$Species, iris$Sepal.Length), ]
+
+# merging data sets
+df <- data.frame(c(1,2,3,4), c("eins","zwei","drei","vier"))
+cbind(df, data.frame(c("I","II","III","IIII")))
+
+# for joining data
+#merge(frame1, frame2, by="IdColumn")
+
+# adding rows
+df <- data.frame(c(1,2,3,4))
+rbind(df, "foo")
+
