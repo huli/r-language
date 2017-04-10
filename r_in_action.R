@@ -270,3 +270,20 @@ cbind(df, data.frame(c("I","II","III","IIII")))
 df <- data.frame(c(1,2,3,4))
 rbind(df, "foo")
 
+
+# Sql Statments for selecting data
+# install.packages("sqldf")
+library(sqldf)
+
+sqldf("select sum(mpg), sum(wt), * from mtcars where carb=1 group by gear")
+
+
+# apply
+data <- matrix(rnorm(30), nrow = 5)
+
+# row means
+apply(data, 1, mean)
+
+# column means 
+apply(data, 2, mean)
+
